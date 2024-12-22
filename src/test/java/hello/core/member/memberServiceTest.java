@@ -1,11 +1,19 @@
 package hello.core.member;
 
+import hello.core.AppConfig;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Bean;
 
 public class memberServiceTest {
 
-    MemberRepository memberRepository = new MemoryMemberRepository();
+    MemberService memberService;
+    @BeforeEach
+    public void BeforeEach() {
+        AppConfig appConfig = new AppConfig();
+        memberService = appConfig.memberService();
+    }
 
     @Test
     void join(){
@@ -13,8 +21,8 @@ public class memberServiceTest {
         Member member = new Member(1L, "memberA", Grade.VIP);
 
         //when
-        memberRepository.save(member);
-        Member findeMember = memberRepository.findById(1L);
+        memberService.join(member);
+        Member findeMember = memberService.findMember(1L);
 
         //then
         Assertions.assertThat(findeMember).isEqualTo(findeMember);
